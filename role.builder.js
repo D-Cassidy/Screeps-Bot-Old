@@ -1,10 +1,12 @@
 const creepFunctions = require('creepFunctions');
 
-var roleUpgrader = {
+var roleBuilder = {
 
-     upgrade: function(creep) {
-          if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-               creep.moveTo(creep.room.controller, {visualizePathStyle: {
+     build: function(creep) {
+          let sites = creep.room.find(FIND_CONSTRUCTION_SITES);
+          let site = sites[0];
+          if(creep.build(site) == ERR_NOT_IN_RANGE) {
+               creep.moveTo(site, {visualizePathStyle: {
                     fill: 'transparent',
                     stroke: '#fff',
                     lineStyle: 'dashed',
@@ -22,8 +24,8 @@ var roleUpgrader = {
           if (!creep.memory.working)
                creepFunctions.harvest(creep);
           else if (creep.memory.working)
-               roleUpgrader.upgrade(creep);
+               roleBuilder.build(creep);
      }
 };
 
-module.exports = roleUpgrader;
+module.exports = roleBuilder;
