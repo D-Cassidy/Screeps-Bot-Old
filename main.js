@@ -10,12 +10,12 @@ module.exports.loop = function() {
           console.log('tock');
 
      let hCount = 0, uCount = 0;
-
      for(let name in Memory.creeps) {
           let creep = Game.creeps[name];
           if(!creep)
                delete Memory.creeps[name];
-          else if(creep.memory.role == 'harvester')
+               
+          if(creep.memory.role == 'harvester')
                hCount += 1;
           else if(creep.memory.role == 'upgrader')
                uCount += 1;
@@ -26,11 +26,11 @@ module.exports.loop = function() {
      let body = [WORK, CARRY, MOVE, MOVE];
      for(let name in Game.spawns) {
           let spawn = Game.spawns[name];
-          if (hCount < 2) {
+          if (hCount < 3) {
                let dName = "Drone H" + (Game.time % 10000);
                spawn.spawnCreep(body, dName, {memory: {role: 'harvester', working: false}});
           }
-          else if (uCount < 4) {
+          else if (uCount < 3) {
                let dName = "Drone U" + (Game.time % 10000);
                spawn.spawnCreep(body, dName, {memory: {role: 'upgrader', working: false}});
           }
