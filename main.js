@@ -26,13 +26,13 @@ module.exports.loop = function() {
      let body = [WORK, CARRY, MOVE, MOVE];
      for(let name in Game.spawns) {
           let spawn = Game.spawns[name];
-          if (hCount < 3) {
+          if (hCount < 2) {
                let dName = "Drone H" + (Game.time % 10000);
-               spawn.spawnCreep(body, dName, {memory: {role: 'harvester'}});
+               spawn.spawnCreep(body, dName, {memory: {role: 'harvester', working: false}});
           }
-          else if (uCount < 3) {
+          else if (uCount < 4) {
                let dName = "Drone U" + (Game.time % 10000);
-               spawn.spawnCreep(body, dName, {memory: {role: 'upgrader'}});
+               spawn.spawnCreep(body, dName, {memory: {role: 'upgrader', working: false}});
           }
      }
 

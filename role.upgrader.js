@@ -2,7 +2,12 @@ var roleUpgrader = {
 
      /** @param {Creep} creep **/
      run: function(creep) {
-          if(creep.store.getFreeCapacity() > 0) {
+          if (creep.store[RESOURCE_ENERGY] == 0)
+               creep.memory.working = false;
+          else if (creep.store[RESOURCE_ENERGY] == creep.store.getCapacity())
+               creep.memory.working = true;
+
+          if (!creep.memory.working) {
                var sources = creep.room.find(FIND_SOURCES);
                if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(sources[0], {visualizePathStyle: {
@@ -14,7 +19,7 @@ var roleUpgrader = {
                     }});
                }
           }
-          else {
+          else if (creep.memory.working) {
                if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(creep.room.controller, {visualizePathStyle: {
                          fill: 'transparent',
