@@ -48,7 +48,8 @@ var roleHarvester = {
           else if (creep.memory.working) {
                if (Game.spawns['HIVE ALPHA'].store.getFreeCapacity(RESOURCE_ENERGY) == 0)
                     roleUpgrader.run(creep);
-               roleHarvester.transferEnergy(creep);
+               else
+                    roleHarvester.transferEnergy(creep);
           }
      }
 };
