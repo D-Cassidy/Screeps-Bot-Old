@@ -20,8 +20,10 @@ module.exports.loop = function() {
      let hCount = 0, uCount = 0, bCount = 0;
      for(let name in Memory.creeps) {
           let creep = Game.creeps[name];
-          if(!creep)
+          if(!creep) {
                delete Memory.creeps[name];
+               continue;
+          }
 
           if(creep.memory.role == 'harvester')
                hCount += 1;

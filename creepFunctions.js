@@ -12,7 +12,7 @@ var creepFunctions = {
 
      harvest: function(creep) {
           let sources = creep.room.find(FIND_SOURCES);
-          let source = sources[0];
+          let source = sources[1];
           if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
                creep.moveTo(source, {visualizePathStyle: {
                     fill: 'transparent',
