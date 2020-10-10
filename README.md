@@ -1,7 +1,7 @@
 # Screeps-Colony
 
 TODO:
-* Upgrader role
+* make use of both sources
 * Builder role
 * Automatic creep production
 * Tower logic

@@ -1,4 +1,4 @@
-var roleHarvester = {
+var roleUpgrader = {
 
      /** @param {Creep} creep **/
      run: function(creep) {
@@ -15,8 +15,8 @@ var roleHarvester = {
                }
           }
           else {
-               if(creep.transfer(Game.spawns['HIVE ALPHA'], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(Game.spawns['HIVE ALPHA'], {visualizePathStyle: {
+               if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(creep.room.controller, {visualizePathStyle: {
                          fill: 'transparent',
                          stroke: '#fff',
                          lineStyle: 'dashed',
@@ -28,4 +28,4 @@ var roleHarvester = {
      }
 };
 
-module.exports = roleHarvester;
+module.exports = roleUpgrader;
