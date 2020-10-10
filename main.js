@@ -17,36 +17,34 @@ module.exports.loop = function() {
     else
     console.log('tock');
 
-    let hCount = 0, uCount = 0, bCount = 0;
     for(let name in Memory.creeps) {
         let creep = Game.creeps[name];
-        if(!creep) {
+        if(!creep)
             delete Memory.creeps[name];
-            continue;
-        }
-
-        if(creep.memory.role == 'harvester')
-        hCount += 1;
-        else if(creep.memory.role == 'upgrader')
-        uCount += 1;
-        else if(creep.memory.role == 'builder')
-        bCount += 1;
     }
 
-    console.log(`Harvesters: ${hCount}, Upgraders: ${uCount}, Builders: ${bCount}`);
+    // Object of role counts
+    const roleCount = Object.values(Game.creeps).reduce((obj, creep) => {
+        if(!obj[creep.memory.role])
+            obj[creep.memory.role] = 0;
+        obj[creep.memory.role]++;
+        return obj;
+    }, {})
+
+    console.log(`Harvesters: ${roleCount.harvester}, Upgraders: ${roleCount.upgrader}, Builders: ${roleCount.builder}`);
 
     let body = [WORK, CARRY, MOVE, MOVE];
     for(let name in Game.spawns) {
         let spawn = Game.spawns[name];
-        if (hCount < 3) {
+        if (roleCount.harvester < 3) {
             let dName = "Drone H" + (Game.time % 10000);
             spawnDrone(spawn, body, dName, 'harvester');
         }
-        else if (uCount < 3) {
+        else if (roleCount.upgrader < 3) {
             let dName = "Drone U" + (Game.time % 10000);
             spawnDrone(spawn, body, dName, 'upgrader');
         }
-        else if (bCount < 2) {
+        else if (roleCount.builder < 2) {
             let dName = "Drone B" + (Game.time % 10000);
             spawnDrone(spawn, body, dName, 'builder');
         }
