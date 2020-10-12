@@ -3,6 +3,12 @@ const roleUpgrader = require('role.upgrader');
 
 var roleHarvester = {
 
+    roleName: "Harvester",
+
+    is: function(creep) {
+        return (creep.memory.role == this.roleName) ? true : false;
+    },
+
     transferEnergy: function(creep) {
         if(creep.transfer(Game.spawns['HIVE ALPHA'], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
             creep.moveTo(Game.spawns['HIVE ALPHA'], {visualizePathStyle: {

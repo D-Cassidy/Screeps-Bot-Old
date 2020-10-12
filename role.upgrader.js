@@ -2,6 +2,12 @@ const creepFunctions = require('creepFunctions');
 
 var roleUpgrader = {
 
+    roleName: "Upgrader",
+
+    is: function(creep) {
+        return (creep.memory.role == this.roleName) ? true : false;
+    },
+
     upgrade: function(creep) {
         if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
             creep.moveTo(creep.room.controller, {visualizePathStyle: {

@@ -2,6 +2,12 @@ const creepFunctions = require('creepFunctions');
 
 var roleBuilder = {
 
+    roleName: "Builder",
+
+    is: function(creep) {
+        return (creep.memory.role == this.roleName) ? true : false;
+    },
+
     build: function(creep) {
         let sites = creep.room.find(FIND_CONSTRUCTION_SITES);
         let site = sites[0];
