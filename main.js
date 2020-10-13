@@ -8,13 +8,17 @@ const roomFunctions = require('roomFunctions');
 
 module.exports.loop = function() {
     if (Game.time % 2 == 0)
-    console.log('tick');
+        console.log('tick');
     else
-    console.log('tock');
+        console.log('tock');
 
     for(var name in Memory.creeps) {
-        if(!Game.creeps[name])
+        var creep = Memory.creeps[name];
+        if(!Game.creeps[name]) {
+            if(creep.working)
+                Memory.rooms[creep.memory.room].sources[creep.memory.source]['freeSpaces']--;
             delete Memory.creeps[name];
+        }
     }
 
     // Object of role counts
@@ -32,7 +36,14 @@ module.exports.loop = function() {
         Working: 0,
         Slacking: 0
     });
-    console.log(`Harvesters: ${roleCount.Harvester}, Upgraders: ${roleCount.Upgrader}, Builders: ${roleCount.Builder}, (Working: ${roleCount.Working}, Harvesting: ${roleCount.Slacking})`);
+
+    if(Game.time % 10 == 0) {
+        console.log(`Harvesters: ${roleCount.Harvester} |`,
+            `Upgraders: ${roleCount.Upgrader} |`,
+            `Builders: ${roleCount.Builder} |`,
+            `(Working: ${roleCount.Working}, Harvesting: ${roleCount.Slacking})`
+        );
+    }
 
     for(var name in Game.spawns) {
         var spawn = Game.spawns[name];

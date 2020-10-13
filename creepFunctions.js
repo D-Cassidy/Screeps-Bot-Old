@@ -29,7 +29,13 @@ var creepFunctions = {
         var dName = "Drone " + role.charAt(0) + (Game.time % 10000);
         if (spawn.spawnCreep(body, dName, {dryRun: true}) == OK) {
             console.log(`CREATING DRONE. ${dName} PLEASE ENJOY YOUR SHORT EXISTENCE`);
-            spawn.spawnCreep(body, dName, {memory: {role: role, working: true, source: "S0"}});
+            spawn.spawnCreep(body, dName, {memory: {
+                role: role,
+                room: spawn.room.name,
+                source: "S0",
+                spawn: spawn.name,
+                working: true
+            }});
         }
     },
 
@@ -38,13 +44,11 @@ var creepFunctions = {
             creep.memory.working = false;
             creep.memory.source = creepFunctions.getFreeSource(creep);
             creep.room.memory.sources[creep.memory.source]['freeSpaces']--;
-            console.log("Subtracted one free space...");
             creep.say('BEEP BOOP');
         }
         else if (creep.store[RESOURCE_ENERGY] == creep.store.getCapacity() && creep.memory.working == false) {
             creep.memory.working = true;
             creep.room.memory.sources[creep.memory.source]['freeSpaces']++;
-            console.log("Added one free space...");
             creep.say('BEEP BOOP');
         }
     }
