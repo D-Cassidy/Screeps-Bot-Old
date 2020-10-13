@@ -4,6 +4,7 @@ const roleHarvester = require('role.harvester');
 const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
 const creepFunctions = require('creepFunctions');
+const roomFunctions = require('roomFunctions');
 
 module.exports.loop = function() {
     if (Game.time % 2 == 0)
@@ -28,16 +29,24 @@ module.exports.loop = function() {
     for(var name in Game.spawns) {
         var spawn = Game.spawns[name];
         if (roleCount.Harvester < 3) {
-            var dName = roleHarvester.roleName.charAt(0) + (Game.time % 10000);
-            creepFunctions.spawnDrone(spawn, body, dName, roleHarvester.roleName);
+            var dName = "Drone " + roleHarvester.roleName.charAt(0) + (Game.time % 10000);
+            creepFunctions.spawnDrone(spawn, dName, roleHarvester.roleName);
         }
         else if (roleCount.Upgrader < 3) {
-            var dName = roleUpgrader.roleName.charAt(0) + (Game.time % 10000);
-            creepFunctions.spawnDrone(spawn, body, dName, roleUpgrader.roleName);
+            var dName = "Drone " + roleUpgrader.roleName.charAt(0) + (Game.time % 10000);
+            creepFunctions.spawnDrone(spawn, dName, roleUpgrader.roleName);
         }
         else if (roleCount.Builder < 2) {
-            var dName = roleBuilder.roleName.charAt(0) + (Game.time % 10000);
-            creepFunctions.spawnDrone(spawn, body, dName, roleBuilder.roleName);
+            var dName = "Drone " + roleBuilder.roleName.charAt(0) + (Game.time % 10000);
+            creepFunctions.spawnDrone(spawn, dName, roleBuilder.roleName);
+        }
+
+
+        for(var rName in Memory.rooms) {
+            var room = Memory.rooms[rName];
+            var sources = spawn.room.find(FIND_SOURCES);
+            roomFunctions.makeRoomSources(room, sources);
+            roomFunctions.makeFreeSpacesAround(room, sources);
         }
     }
 
