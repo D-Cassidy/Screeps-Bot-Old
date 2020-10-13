@@ -23,7 +23,11 @@ module.exports.loop = function() {
             obj[creep.memory.role] = 0;
         obj[creep.memory.role]++;
         return obj;
-    }, {});
+    }, {
+        Harvester: 0,
+        Upgrader: 0,
+        Builder: 0
+    });
     console.log(`Harvesters: ${roleCount.Harvester}, Upgraders: ${roleCount.Upgrader}, Builders: ${roleCount.Builder}`);
 
     for(var name in Game.spawns) {
@@ -41,12 +45,13 @@ module.exports.loop = function() {
             creepFunctions.spawnDrone(spawn, dName, roleBuilder.roleName);
         }
 
-
-        for(var rName in Memory.rooms) {
-            var room = Memory.rooms[rName];
-            var sources = spawn.room.find(FIND_SOURCES);
-            roomFunctions.makeRoomSources(room, sources);
-            roomFunctions.makeFreeSpacesAround(room, sources);
+        if(Game.time % 100 == 0) {
+            for(var rName in Memory.rooms) {
+                var room = Memory.rooms[rName];
+                var sources = spawn.room.find(FIND_SOURCES);
+                roomFunctions.makeRoomSources(room, sources);
+                roomFunctions.makeFreeSpacesAround(room, sources);
+            }
         }
     }
 

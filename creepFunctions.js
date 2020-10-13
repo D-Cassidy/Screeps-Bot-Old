@@ -5,6 +5,8 @@ var creepFunctions = {
         for (var i = 0; i < sourcesN; i++) {
             if(creep.room.memory.sources["S" + i + " Free"] > 0)
                 return "S" + i;
+            else
+                return "S" + 0;
         }
     },
 
@@ -25,7 +27,7 @@ var creepFunctions = {
         var body = [WORK, CARRY, MOVE, MOVE];
         if (spawn.spawnCreep(body, dName, {dryRun: true}) == OK) {
             console.log(`CREATING DRONE. ${dName} PLEASE ENJOY YOUR SHORT EXISTENCE`);
-            spawn.spawnCreep(body, dName, {memory: {role: role, working: false, source: ""}});
+            spawn.spawnCreep(body, dName, {memory: {role: role, working: true, source: ""}});
         }
     },
 
@@ -38,7 +40,7 @@ var creepFunctions = {
         }
         else if (creep.store[RESOURCE_ENERGY] == creep.store.getCapacity() && creep.memory.working == false) {
             creep.memory.working = true;
-            creep.room.sources[creep.memory.source + " Free"]++;
+            creep.room.memory.sources[creep.memory.source + " Free"]++;
             creep.say('BEEP BOOP');
         }
     }
