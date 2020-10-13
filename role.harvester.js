@@ -10,14 +10,16 @@ var roleHarvester = {
     },
 
     transferEnergy: function(creep) {
-        if(creep.transfer(Game.spawns[creep.memory.spawn], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(Game.spawns[creep.memory.spawn], {visualizePathStyle: {
-                fill: 'transparent',
-                stroke: '#fff',
-                lineStyle: 'dashed',
-                strokeWidth: .15,
-                opacity: .1
-            }});
+        var structures = creep.room.find(FIND_MY_STRUCTURES).filter(structure => {
+            if(structure.structureType == STRUCTURE_SPAWN ||
+            structure.structureType == STRUCTURE_EXTENSION ||
+            structure.structureType == STRUCTURE_TOWER &&
+            structure.store.getFreeCapacity() > 0) {
+                return structure;
+            }
+        });
+        if(creep.transfer(structures[0]) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(structures[0], {visualizePathStyle: creepFunctions.pathStyle});
         }
     },
 

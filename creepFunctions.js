@@ -1,5 +1,13 @@
 var creepFunctions = {
 
+    pathStyle: {
+        fill: 'transparent',
+        stroke: '#fff',
+        lineStyle: 'dashed',
+        strokeWidth: .15,
+        opacity: .1
+    },
+
     getFreeSource: function(creep) {
         // loop through and check free spaces of source
         for (var name in creep.room.memory.sources) {
@@ -33,7 +41,7 @@ var creepFunctions = {
             spawn.spawnCreep(body, dName, {memory: {
                 role: role,
                 room: spawn.room.name,
-                source: "S0",
+                source: "S" + 0,
                 spawn: spawn.name,
                 working: true
             }});
