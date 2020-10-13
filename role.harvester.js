@@ -26,13 +26,16 @@ var roleHarvester = {
 
         creepFunctions.workerStateCheck(creep);
 
-        if (!creep.memory.working)
+        if (!creep.memory.working) {
             creepFunctions.harvest(creep);
+        }
         else if (creep.memory.working) {
-            if (Game.spawns[creep.memory.spawn].store.getFreeCapacity(RESOURCE_ENERGY) == 0)
+            if (Game.spawns[creep.memory.spawn].store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
                 roleUpgrader.run(creep);
-            else
+            }
+            else {
                 roleHarvester.transferEnergy(creep);
+            }
         }
     }
 };

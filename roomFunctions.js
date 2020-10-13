@@ -3,8 +3,9 @@ var roomFunctions = {
     makeRoomSources: function(room, sources) {
         var len = sources.length;
         for(var i = 0; i < len; i++) {
-            if(!room.sources)
+            if(!room.sources) {
                 room.sources = {};
+            }
             if(!room.sources["S" + i]) {
                 room.sources["S" + i] = {};
                 room.sources["S" + i]['name'] = "S" + i;
@@ -37,8 +38,9 @@ var roomFunctions = {
         var len = spacesAround.length;
         for (var i = 0; i < len; i++) {
             var look = spacesAround[i].lookFor(LOOK_TERRAIN);
-            if(look != 'wall')
+            if(look != 'wall') {
                 freeSpaces.push(spacesAround[i]);
+            }
         }
         return freeSpaces;
     }

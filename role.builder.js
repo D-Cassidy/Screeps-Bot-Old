@@ -27,14 +27,17 @@ var roleBuilder = {
 
         creepFunctions.workerStateCheck(creep);
 
-        if (!creep.memory.working)
+        if (!creep.memory.working) {
             creepFunctions.harvest(creep);
+        }
         else if (creep.memory.working) {
             var sites = creep.room.find(FIND_CONSTRUCTION_SITES);
-            if(sites.length == 0)
+            if(sites.length == 0) {
                 roleHarvester.run(creep);
-            else
+            }
+            else {
                 roleBuilder.build(creep, sites);
+            }
         }
     }
 };

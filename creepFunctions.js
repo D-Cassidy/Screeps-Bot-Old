@@ -4,8 +4,9 @@ var creepFunctions = {
         // loop through and check free spaces of source
         for (var name in creep.room.memory.sources) {
             var source = creep.room.memory.sources[name];
-            if(source['freeSpaces'] > 0)
+            if(source['freeSpaces'] > 0) {
                 return source['name'];
+            }
         }
         // if the for loop failed to get a source...
         return creep.room.memory.sources['S0']['name'];
