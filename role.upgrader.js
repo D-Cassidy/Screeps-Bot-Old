@@ -26,9 +26,9 @@ var roleUpgrader = {
         creepFunctions.workerStateCheck(creep);
 
         if (!creep.memory.working)
-        creepFunctions.harvest(creep);
+            creepFunctions.harvest(creep);
         else if (creep.memory.working)
-        roleUpgrader.upgrade(creep);
+            roleUpgrader.upgrade(creep);
     }
 };
 

@@ -1,21 +1,16 @@
 var roomFunctions = {
 
     makeRoomSources: function(room, sources) {
-        for(var i = 0; i < sources.length; i++) {
+        var len = sources.length;
+        for(var i = 0; i < len; i++) {
             if(!room.sources)
                 room.sources = {};
-            if(!room.sources["S" + i])
-                room.sources["S" + i] = sources[i].id;
-        }
-    },
-
-    makeFreeSpacesAround: function(room, sources) {
-        for(var i = 0; i < sources.length; i++) {
-            if(!room.sources["S" + i + " Free"]) {
-                room.sources["S" + i + " Free"] =
-                roomFunctions.getFreeSpacesAround(
-                    Game.getObjectById(room.sources["S" + i])
-                ).length + 1;
+            if(!room.sources["S" + i]) {
+                room.sources["S" + i] = {};
+                room.sources["S" + i]['name'] = "S" + i;
+                room.sources["S" + i]['id'] = sources[i].id;
+                room.sources["S" + i]['freeSpaces'] =
+                roomFunctions.getFreeSpacesAround(sources[i]).length + 1;
             }
         }
     },

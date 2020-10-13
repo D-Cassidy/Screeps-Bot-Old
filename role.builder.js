@@ -1,3 +1,4 @@
+const roleHarvester = require('role.harvester');
 const creepFunctions = require('creepFunctions');
 
 var roleBuilder = {
@@ -8,8 +9,7 @@ var roleBuilder = {
         return (creep.memory.role == this.roleName) ? true : false;
     },
 
-    build: function(creep) {
-        let sites = creep.room.find(FIND_CONSTRUCTION_SITES);
+    build: function(creep, sites) {
         let site = sites[0];
         if(creep.build(site) == ERR_NOT_IN_RANGE) {
             creep.moveTo(site, {visualizePathStyle: {
@@ -28,9 +28,13 @@ var roleBuilder = {
         creepFunctions.workerStateCheck(creep);
 
         if (!creep.memory.working)
-        creepFunctions.harvest(creep);
+            creepFunctions.harvest(creep);
         else if (creep.memory.working)
-        roleBuilder.build(creep);
+            var sites = creep.room.find(FIND_CONSTRUCTION_SITES);
+            if(sites.length == 0)
+                roleHarvester.run(creep);
+            else
+                roleBuilder.build(creep, sites);
     }
 };
 

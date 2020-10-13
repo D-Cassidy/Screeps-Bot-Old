@@ -19,39 +19,34 @@ module.exports.loop = function() {
 
     // Object of role counts
     const roleCount = Object.values(Game.creeps).reduce((obj, creep) => {
-        if(!obj[creep.memory.role])
-            obj[creep.memory.role] = 0;
         obj[creep.memory.role]++;
+        if(creep.memory.working)
+            obj['Working']++;
+        else
+            obj['Slacking']++;
         return obj;
     }, {
         Harvester: 0,
         Upgrader: 0,
-        Builder: 0
+        Builder: 0,
+        Working: 0,
+        Slacking: 0
     });
-    console.log(`Harvesters: ${roleCount.Harvester}, Upgraders: ${roleCount.Upgrader}, Builders: ${roleCount.Builder}`);
+    console.log(`Harvesters: ${roleCount.Harvester}, Upgraders: ${roleCount.Upgrader}, Builders: ${roleCount.Builder}, (Working: ${roleCount.Working}, Harvesting: ${roleCount.Slacking})`);
 
     for(var name in Game.spawns) {
         var spawn = Game.spawns[name];
-        if (roleCount.Harvester < 3) {
-            var dName = "Drone " + roleHarvester.roleName.charAt(0) + (Game.time % 10000);
-            creepFunctions.spawnDrone(spawn, dName, roleHarvester.roleName);
-        }
-        else if (roleCount.Upgrader < 3) {
-            var dName = "Drone " + roleUpgrader.roleName.charAt(0) + (Game.time % 10000);
-            creepFunctions.spawnDrone(spawn, dName, roleUpgrader.roleName);
-        }
-        else if (roleCount.Builder < 2) {
-            var dName = "Drone " + roleBuilder.roleName.charAt(0) + (Game.time % 10000);
-            creepFunctions.spawnDrone(spawn, dName, roleBuilder.roleName);
-        }
+        if (roleCount.Harvester < 2)
+            creepFunctions.spawnDrone(spawn, roleHarvester.roleName);
+        else if (roleCount.Upgrader < 2)
+            creepFunctions.spawnDrone(spawn, roleUpgrader.roleName);
+        else if (roleCount.Builder < 4)
+            creepFunctions.spawnDrone(spawn, roleBuilder.roleName);
 
-        if(Game.time % 100 == 0) {
-            for(var rName in Memory.rooms) {
-                var room = Memory.rooms[rName];
-                var sources = spawn.room.find(FIND_SOURCES);
-                roomFunctions.makeRoomSources(room, sources);
-                roomFunctions.makeFreeSpacesAround(room, sources);
-            }
+        if(Game.time % 1000 == 0) {
+            var room = spawn.room.memory;
+            var sources = spawn.room.find(FIND_SOURCES);
+            roomFunctions.makeRoomSources(room, sources);
         }
     }
 
