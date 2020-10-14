@@ -1,16 +1,16 @@
-var creepFunctions = {
+const misc = require('./misc');
 
-    // Style for moveTo path in each role
-    pathStyle: {
-        fill: 'transparent',
-        stroke: '#fff',
-        lineStyle: 'dashed',
-        strokeWidth: .15,
-        opacity: .1
-    },
+class CreepsBase {
+    constructor(role) {
+        this.roleName = role;
+    }
+
+    is(creep) {
+        return creep.memory.role == this.roleName;
+    }
 
     // Used to make more creeps
-    roleCount: function() {
+    roleCount() {
         var roleCount = Object.values(Game.creeps).reduce((obj, creep) => {
             obj[creep.memory.role]++;
             if(creep.memory.working) { obj['Working']++; }
@@ -32,10 +32,10 @@ var creepFunctions = {
         );
 
         return roleCount;
-    },
+    }
 
     // Used by harvest to check if source has a free space
-    getFreeSource: function(creep) {
+    getFreeSource(creep) {
         // loop through and check free spaces of source
         for (var name in creep.room.memory.sources) {
             var source = creep.room.memory.sources[name];
@@ -45,15 +45,13 @@ var creepFunctions = {
         }
         // if the for loop failed to get a source...
         return creep.room.memory.sources['S0']['name'];
-    },
-
-
+    }
 
     // Swaps creep working memory between true and false
-    workerStateCheck: function(creep) {
+    workerStateCheck(creep) {
         if (creep.store[RESOURCE_ENERGY] == 0 && creep.memory.working == true) {
             creep.memory.working = false;
-            creep.memory.source = creepFunctions.getFreeSource(creep);
+            creep.memory.source = this.getFreeSource(creep);
             creep.room.memory.sources[creep.memory.source]['freeSpaces']--;
             creep.say('BEEP BOOP');
         }
@@ -62,10 +60,10 @@ var creepFunctions = {
             creep.room.memory.sources[creep.memory.source]['freeSpaces']++;
             creep.say('BEEP BOOP');
         }
-    },
+    }
 
     // Get structures creep can transfer too, sorted
-    getTransferrableStructures: function(creep) {
+    getTransferrableStructures(creep) {
         return creep.room.find(FIND_MY_STRUCTURES)
             .filter(structure => {
                 if((structure.structureType == STRUCTURE_SPAWN ||
@@ -79,40 +77,40 @@ var creepFunctions = {
                 return (a.store.getUsedCapacity(RESOURCE_ENERGY) -
                     b.store.getUsedCapacity(RESOURCE_ENERGY));
             });
-    },
+    }
 
-    getConstructionSites: function(creep) {
+    getConstructionSites(creep) {
         var sites = creep.room.find(FIND_MY_CONSTRUCTION_SITES).sort((a, b) => {
             return (b.progress - a.progress);
         });
         return sites;
-    },
+    }
 
-    build: function(creep, sites) {
+    build(creep, sites) {
         if(creep.build(sites[0]) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(sites[0], {visualizePathStyle: creepFunctions.pathStyle});
+            creep.moveTo(sites[0], {visualizePathStyle: misc.pathStyle});
         }
-    },
+    }
 
     // Harvests using creep's memory of source
-    harvest: function(creep) {
+    harvest(creep) {
         var source = Game.getObjectById(creep.room.memory.sources[creep.memory.source]['id']);
         if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(source, {visualizePathStyle: creepFunctions.pathStyle});
+            creep.moveTo(source, {visualizePathStyle: misc.pathStyle});
         }
-    },
+    }
 
-    transferEnergy: function(creep, structures) {
+    transferEnergy(creep, structures) {
         if(creep.transfer(structures[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(structures[0], {visualizePathStyle: creepFunctions.pathStyle});
+            creep.moveTo(structures[0], {visualizePathStyle: misc.pathStyle});
         }
-    },
+    }
 
-    upgrade: function(creep) {
+    upgrade(creep) {
         if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(creep.room.controller, {visualizePathStyle: creepFunctions.pathStyle});
+            creep.moveTo(creep.room.controller, {visualizePathStyle: misc.pathStyle});
         }
-    },
+    }
 }
 
-module.exports = creepFunctions;
+module.exports = CreepsBase;

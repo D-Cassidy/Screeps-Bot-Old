@@ -1,32 +1,32 @@
-const creepFunctions = require('creepFunctions');
-const roleUpgrader = require('role.upgrader');
+const CreepsBase = require('./creeps');
 
-var roleHarvester = {
+const role = 'Harvester';
+class RoleHarvester extends CreepsBase {
+    constructor() {
+        super(role);
+    }
 
-    roleName: "Harvester",
-
-    is: function(creep) {
+    /*is: function(creep) {
         return (creep.memory.role == this.roleName) ? true : false;
-    },
+    }*/
 
-    /** @param {Creep} creep **/
-    run: function(creep) {
+    run(creep) {
 
-        creepFunctions.workerStateCheck(creep);
+        this.workerStateCheck(creep);
 
         if (!creep.memory.working) {
-            creepFunctions.harvest(creep);
+            this.harvest(creep);
         }
         else {
-            var structures = creepFunctions.getTransferrableStructures(creep);
+            var structures = this.getTransferrableStructures(creep);
             if(structures.length == 0) {
                 roleUpgrader.run(creep);
             }
             else {
-                creepFunctions.transferEnergy(creep, structures);
+                this.transferEnergy(creep, structures);
             }
         }
     }
 };
 
-module.exports = roleHarvester;
+module.exports = new RoleHarvester();

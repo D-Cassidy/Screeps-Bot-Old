@@ -1,13 +1,13 @@
 // THE SCREEPS COLONY
 // ------------------
-const roleHarvester = require('./role.harvester');
-const roleUpgrader = require('./role.upgrader');
-const roleBuilder = require('./role.builder');
-const creepFunctions = require('./creepFunctions');
+const RoleHarvester = require('./role.harvester');
+const RoleUpgrader = require('./role.upgrader');
+const RoleBuilder = require('./role.builder');
+const Tower = require('./struct-tower');
+const Spawner = require('./struct-spawner');
 const roomFunctions = require('./roomFunctions');
-const spawnFunctions = require('./spawnFunctions');
-const towerFunctions = require('./towerFunctions');
 const creepNames = require('./creepNames');
+
 
 module.exports.loop = function() {
     // Tick, Tock...
@@ -26,39 +26,38 @@ module.exports.loop = function() {
         }
     }
 
-    for(var name in Game.spawns) {
-        var spawn = Game.spawns[name];
-        if(Game.time % 10 == 0) {
-            var roleCount = creepFunctions.roleCount();
-            spawnFunctions.checkForSpawn(spawn, roleCount);
+    for(var name in Game.rooms) {
+        let room = Game.rooms[name];
+        let structures = room.find(FIND_MY_STRUCTURES);
+        for(var name in structures) {
+            let s = structures[name];
+            if(s.structureType == Spawner.structureType) {
+                var roleCount = creepFunctions.roleCount();
+                Spawner.checkForSpawn(s, roleCount);
+                if(spawn.spawning) {
+                    Spawner.displaySpawningText(s);
+                }
+                if(Game.time % 1000 == 0) {
+                    roomFunctions.makeRoomSources(spawn);
+                }
+            }
+            else if(s.structureType == Tower.structureType) {
+                Tower.runTower(structure);
+            }
         }
-        if(spawn.spawning) {
-            spawnFunctions.displaySpawningText(spawn);
-        }
-
-        // Will set room source memory, if it does not exist
-        if(Game.time % 1000 == 0) {
-            roomFunctions.makeRoomSources(spawn);
-        }
-    }
-
-    for(var name in Game.structures) {
-        var structure = Game.structures[name];
-        if (structure.structureType == STRUCTURE_TOWER)
-            towerFunctions.runTower(structure);
     }
 
     // Loop for existing creeps, runs role logic
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
-        if (roleHarvester.is(creep)) {
-            roleHarvester.run(creep);
+        if(RoleHarvester.is(creep)) {
+            RoleHarvester.run(creep);
         }
-        else if (roleUpgrader.is(creep)) {
-            roleUpgrader.run(creep);
+        else if(RoleUpgrader.is(creep)) {
+            RoleUpgrader.run(creep);
         }
-        else if (roleBuilder.is(creep)) {
-            roleBuilder.run(creep);
+        else if(RoleBuilder.is(creep)) {
+            RoleBuilder.run(creep);
         }
     }
 }

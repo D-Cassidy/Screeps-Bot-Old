@@ -1,21 +1,25 @@
-const roleHarvester = require('./role.harvester');
-const roleUpgrader = require('./role.upgrader');
-const roleBuilder = require('./role.builder');
+const RoleHarvester = require('./role.harvester');
+const RoleUpgrader = require('./role.upgrader');
+const RoleBuilder = require('./role.builder');
+const StructBase = require('./struct-base');
 const creepNames = require('./creepNames')
 
-var spawnFunctions = {
+class Spawner extends StructBase {
+    constructor() {
+        super(STRUCTURE_SPAWN);
+    }
 
-    displaySpawningText: function(spawn) {
+    displaySpawningText(spawn) {
         var percent = parseInt((spawn.spawning.needTime - spawn.spawning.remainingTime) / spawn.spawning.needTime * 100);
         spawn.room.visual.text(
             `CREATING ${spawn.spawning.name} (%${percent})`,
             spawn.pos.x + 1,
             spawn.pos.y,
-            {size:'0.5', align: 'left', opacity: 0.8, font: 'bold italic 0.75 Comic Sans'}
+            { size: '0.5', align: 'left', opacity: 0.8, font: 'bold italic 0.75 Comic Sans' }
         );
-    },
+    }
 
-    getCreepBody: function(spawn, panic) {
+    getCreepBody(spawn, panic) {
         var i, j, n, len;
         var creepBody, creepBodyBase, creepBodyCost, availableEnergy;
 
@@ -43,11 +47,12 @@ var spawnFunctions = {
             }
         }
         return creepBody;
-    },
+    }
 
-    checkForSpawn: function (spawn, roleCount) {
+    checkForSpawn(spawn, roleCount) {
         var body;
         if (roleCount.Harvester == 0) {
+            console.log("ALL THE HARVESTERS ARE GONE 🦀");
             body = spawnFunctions.getCreepBody(spawn, true); // 250
         }
         else {
@@ -55,17 +60,17 @@ var spawnFunctions = {
         }
 
         if (roleCount.Harvester < 2) {
-            spawnFunctions.spawnDrone(spawn, body, roleHarvester.roleName);
+            spawnFunctions.spawnDrone(spawn, body, RoleHarvester.roleName);
         }
         else if (roleCount.Upgrader < 2) {
-            spawnFunctions.spawnDrone(spawn, body, roleUpgrader.roleName);
+            spawnFunctions.spawnDrone(spawn, body, RoleUpgrader.roleName);
         }
         else if (roleCount.Builder < 3) {
-            spawnFunctions.spawnDrone(spawn, body, roleBuilder.roleName);
+            spawnFunctions.spawnDrone(spawn, body, RoleBuilder.roleName);
         }
-    },
+    }
 
-    spawnDrone: function(spawn, body, role) {
+    spawnDrone(spawn, body, role) {
         var dName = creepNames[Game.time % creepNames.length] + ' ' + role.charAt(0);
         if (spawn.spawnCreep(body, dName, {dryRun: true}) == OK) {
             console.log(`CREATING DRONE. WELCOME ${dName}, PLEASE ENJOY YOUR SHORT EXISTENCE`);
@@ -80,4 +85,4 @@ var spawnFunctions = {
     }
 };
 
-module.exports = spawnFunctions;
+module.exports = new Spawner();

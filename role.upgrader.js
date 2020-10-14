@@ -1,25 +1,25 @@
-const creepFunctions = require('creepFunctions');
+const CreepsBase = require('./creeps');
 
-var roleUpgrader = {
+const role = 'Upgrader';
+class RoleUpgrader extends CreepsBase {
+    constructor() {
+        super(role);
+    }
 
-    roleName: "Upgrader",
-
-    is: function(creep) {
+    /*is: function(creep) {
         return (creep.memory.role == this.roleName) ? true : false;
-    },
+    },*/
 
-    /** @param {Creep} creep **/
-    run: function(creep) {
-
-        creepFunctions.workerStateCheck(creep);
+    run(creep) {
+        this.workerStateCheck(creep);
 
         if (!creep.memory.working) {
-            creepFunctions.harvest(creep);
+            this.harvest(creep);
         }
         else {
-            creepFunctions.upgrade(creep);
+            this.upgrade(creep);
         }
     }
 };
 
-module.exports = roleUpgrader;
+module.exports = new RoleUpgrader();
