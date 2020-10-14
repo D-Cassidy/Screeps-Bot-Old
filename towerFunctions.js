@@ -2,9 +2,7 @@ var towerFunctions = {
 
     repairStructures: function(tower) {
         var structures = tower.room.find(FIND_STRUCTURES).filter(structure => {
-            if(structure.hits < structure.hitsMax) {
-                return structure;
-            }
+            if(structure.hits < structure.hitsMax) { return structure; }
         });
         tower.repair(structures[0]);
     },

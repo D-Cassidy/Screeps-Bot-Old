@@ -10,6 +10,7 @@ var roleHarvester = {
     },
 
     transferEnergy: function(creep) {
+        // Find all owned spawns, extensions, and towers in the room
         var structures = creep.room.find(FIND_MY_STRUCTURES).filter(structure => {
             if((structure.structureType == STRUCTURE_SPAWN ||
             structure.structureType == STRUCTURE_EXTENSION ||
@@ -18,6 +19,12 @@ var roleHarvester = {
                 return structure;
             }
         });
+        // Sorts strucures by amount of energy in descending order
+        structures.sort((a, b) => {
+            return (a.store.getUsedCapacity(RESOURCE_ENERGY) -
+                    b.store.getUsedCapacity(RESOURCE_ENERGY));
+        });
+        // If there are no strucutres that need energy, upgrade. Otherwise transfer
         if(structures.length == 0) {
             roleUpgrader.run();
         }
