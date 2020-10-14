@@ -2,6 +2,7 @@ const RoleHarvester = require('./role.harvester');
 const RoleUpgrader = require('./role.upgrader');
 const RoleBuilder = require('./role.builder');
 const StructBase = require('./struct-base');
+const Phases = require('./phases');
 const creepNames = require('./creepNames')
 
 class Spawner extends StructBase {
@@ -40,7 +41,7 @@ class Spawner extends StructBase {
         }, 0);
 
         len = creepBodyBase.length;
-        n = parseInt(availableEnergy / creepBodyCost);
+        n = parseInt(availableEnergy / creepBodyCost) - 1;
         for(i = 0; i < len; i++) {
             for(j = 0; j < n; j++) {
                 creepBody.push(creepBodyBase[i]);
@@ -59,13 +60,14 @@ class Spawner extends StructBase {
             body = this.getCreepBody(spawn, false); // 600
         }
 
-        if (roleCount.Harvester < 2) {
+        let phase = Phases.getPhaseDetails(spawn.room);
+        if (roleCount.Harvester < phase.Harvester.count) {
             this.spawnDrone(spawn, body, RoleHarvester.roleName);
         }
-        else if (roleCount.Upgrader < 2) {
+        else if (roleCount.Upgrader < phase.Upgrader.count) {
             this.spawnDrone(spawn, body, RoleUpgrader.roleName);
         }
-        else if (roleCount.Builder < 3) {
+        else if (roleCount.Builder < phase.Builder.count) {
             this.spawnDrone(spawn, body, RoleBuilder.roleName);
         }
     }

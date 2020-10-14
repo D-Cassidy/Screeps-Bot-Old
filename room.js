@@ -1,3 +1,5 @@
+const Phases = require('./phases');
+
 class Room {
 
     getSpacesAround(object) {
@@ -29,8 +31,16 @@ class Room {
         return freeSpaces;
     }
 
-    initRoomSources(room) {
+    initRoomMemory(room) {
         var roomMem = room.memory || room;
+
+        // Phase Memory
+        if(!roomMem.phase) {
+            console.log(`Initializing Phase No. in ${room.name}`);
+            roomMem.phase = Phases.getCurrentPhaseNo(room);
+        }
+
+        // Energy Source Memory
         var sources = room.find(FIND_SOURCES);
         var len = sources.length;
         for(var i = 0; i < len; i++) {

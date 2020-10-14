@@ -1,4 +1,4 @@
-var creepNames = [
+module.exports = [
     "monkaS",
     "OMEGALUL",
     "Clap",
@@ -50,5 +50,3 @@ var creepNames = [
     "PartyParrot",
     "Pogey"
 ];
-
-module.exports = creepNames;

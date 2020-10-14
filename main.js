@@ -6,6 +6,7 @@ const RoleBuilder = require('./role.builder');
 const Tower = require('./struct-tower');
 const Spawner = require('./struct-spawner');
 const Room = require('./room');
+const Phases = require('./phases');
 
 module.exports.loop = function() {
     // Tick, Tock...
@@ -26,7 +27,8 @@ module.exports.loop = function() {
 
     for(let name in Game.rooms) {
         let room = Game.rooms[name];
-        Room.initRoomSources(room);
+        Room.initRoomMemory(room);
+        Phases.checkPhaseNo(room);
 
         let structures = room.find(FIND_MY_STRUCTURES);
         for(let name in structures) {
