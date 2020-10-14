@@ -23,7 +23,7 @@ class Room {
         var freeSpaces = [];
         var len = spacesAround.length;
         for (var i = 0; i < len; i++) {
-            if(spacesAround[i].lookFor(LOOK_TERRAIN) != 'wall' && spacesAround[i].lookFor(LOOK_CREEPS)) {
+            if(spacesAround[i].lookFor(LOOK_TERRAIN) != 'wall' && spacesAround[i].lookFor(LOOK_CREEPS).length == 0) {
                 freeSpaces.push(spacesAround[i]);
             }
         }

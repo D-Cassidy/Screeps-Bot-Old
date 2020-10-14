@@ -51,13 +51,13 @@ class Spawner extends StructBase {
     }
 
     checkForSpawn(spawn, roleCount) {
-        var body;
+        let body;
         if (roleCount.Harvester == 0) {
             console.log("ALL THE HARVESTERS ARE GONE 🦀");
-            body = this.getCreepBody(spawn, true); // 250
+            body = this.getCreepBody(spawn, true);
         }
         else {
-            body = this.getCreepBody(spawn, false); // 600
+            body = this.getCreepBody(spawn, false);
         }
 
         let phase = Phases.getPhaseDetails(spawn.room);
@@ -86,8 +86,10 @@ class Spawner extends StructBase {
     }
 
     run(spawn) {
-        var roleCount = this.roleCount();
-        this.checkForSpawn(spawn, roleCount);
+        if(Game.time % 10 == 0) {
+            var roleCount = this.roleCount(spawn.room);
+            this.checkForSpawn(spawn, roleCount);
+        }
 
         if(spawn.spawning) {
             this.displaySpawningText(spawn);

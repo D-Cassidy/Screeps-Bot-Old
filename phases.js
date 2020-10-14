@@ -4,13 +4,13 @@ var Phases = [
         Level: 1,
 
         Harvester: {
-            count: 4
+            count: 2
         },
         Upgrader: {
             count: 4
         },
         Builder: {
-            count: 0
+            count: 4
         }
     },
     { // Controller Level 2
@@ -36,7 +36,7 @@ var Phases = [
             count: 2
         },
         Builder: {
-            count: 4
+            count: 2
         }
     }
 ];

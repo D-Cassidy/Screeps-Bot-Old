@@ -11,10 +11,7 @@ class CreepsBase {
     }
 
     suicideCheck(creep) {
-        if(creep.ticksToLive < 3) {
-            if(!creep.memory.working) {
-                Memory.rooms[creep.memory.room].sources[creep.memory.source]['freeSpaces']++;
-            }
+        if(creep.ticksToLive == 1) {
             console.log(`For the greater good, ${creep.name} must commit Sepuku.`);
             creep.suicide();
         }
@@ -51,14 +48,16 @@ class CreepsBase {
             .filter(structure => {
                 if((structure.structureType == STRUCTURE_SPAWN ||
                 structure.structureType == STRUCTURE_EXTENSION ||
-                structure.structureType == STRUCTURE_TOWER) &&
+                structure.structureType == STRUCTURE_TOWER ||
+                structure.structureType == STRUCTURE_CONTAINER ||
+                structure.structureType == STRUCTURE_STORAGE) &&
                 structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
                     return structure;
                 }
             })
             .sort((a, b) => {
-                return (a.store.getUsedCapacity(RESOURCE_ENERGY) -
-                    b.store.getUsedCapacity(RESOURCE_ENERGY));
+                return (misc.structurePriority[a.structureType] -
+                    misc.structurePriority[b.structureType]);
             });
     }
 
