@@ -11,14 +11,17 @@ var roleHarvester = {
 
     transferEnergy: function(creep) {
         var structures = creep.room.find(FIND_MY_STRUCTURES).filter(structure => {
-            if(structure.structureType == STRUCTURE_SPAWN ||
+            if((structure.structureType == STRUCTURE_SPAWN ||
             structure.structureType == STRUCTURE_EXTENSION ||
-            structure.structureType == STRUCTURE_TOWER &&
-            structure.store.getFreeCapacity() > 0) {
+            structure.structureType == STRUCTURE_TOWER) &&
+            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
                 return structure;
             }
         });
-        if(creep.transfer(structures[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+        if(structures.length == 0) {
+            roleUpgrader.run();
+        }
+        else if(creep.transfer(structures[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
             creep.moveTo(structures[0], {visualizePathStyle: creepFunctions.pathStyle});
         }
     },
@@ -32,12 +35,7 @@ var roleHarvester = {
             creepFunctions.harvest(creep);
         }
         else if (creep.memory.working) {
-            if (Game.spawns[creep.memory.spawn].store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
-                roleUpgrader.run(creep);
-            }
-            else {
-                roleHarvester.transferEnergy(creep);
-            }
+            roleHarvester.transferEnergy(creep);
         }
     }
 };

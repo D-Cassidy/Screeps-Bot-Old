@@ -1,10 +1,12 @@
 // THE SCREEPS COLONY
 // ------------------
-const roleHarvester = require('role.harvester');
-const roleUpgrader = require('role.upgrader');
-const roleBuilder = require('role.builder');
-const creepFunctions = require('creepFunctions');
-const roomFunctions = require('roomFunctions');
+const roleHarvester = require('./role.harvester');
+const roleUpgrader = require('./role.upgrader');
+const roleBuilder = require('./role.builder');
+const creepFunctions = require('./creepFunctions');
+const roomFunctions = require('./roomFunctions');
+const spawnFunctions = require('./spawnFunctions');
+const towerFunctions = require('./towerFunctions');
 
 module.exports.loop = function() {
     // Tick, Tock...
@@ -50,22 +52,26 @@ module.exports.loop = function() {
         for(var name in Game.spawns) {
             var spawn = Game.spawns[name];
             if (roleCount.Harvester < 2) {
-                creepFunctions.spawnDrone(spawn, roleHarvester.roleName);
+                spawnFunctions.spawnDrone(spawn, roleHarvester.roleName);
             }
             else if (roleCount.Upgrader < 2) {
-                creepFunctions.spawnDrone(spawn, roleUpgrader.roleName);
+                spawnFunctions.spawnDrone(spawn, roleUpgrader.roleName);
             }
             else if (roleCount.Builder < 6) {
-                creepFunctions.spawnDrone(spawn, roleBuilder.roleName);
+                spawnFunctions.spawnDrone(spawn, roleBuilder.roleName);
             }
 
             // Will initialize room source memory
             if(Game.time % 1000 == 0) {
-                var room = spawn.room.memory;
-                var sources = spawn.room.find(FIND_SOURCES);
-                roomFunctions.makeRoomSources(room, sources);
+                roomFunctions.makeRoomSources(spawn);
             }
         }
+    }
+
+    for(var name in Game.structures) {
+        var structure = Game.structures[name];
+        if (structure.structureType == STRUCTURE_TOWER)
+            towerFunctions.runTower(structure);
     }
 
     // Loop for existing creeps, runs role logic

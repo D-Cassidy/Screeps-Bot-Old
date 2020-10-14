@@ -1,21 +1,5 @@
 var roomFunctions = {
 
-    makeRoomSources: function(room, sources) {
-        var len = sources.length;
-        for(var i = 0; i < len; i++) {
-            if(!room.sources) {
-                room.sources = {};
-            }
-            if(!room.sources["S" + i]) {
-                room.sources["S" + i] = {};
-                room.sources["S" + i]['name'] = "S" + i;
-                room.sources["S" + i]['id'] = sources[i].id;
-                room.sources["S" + i]['freeSpaces'] =
-                roomFunctions.getFreeSpacesAround(sources[i]).length + 1;
-            }
-        }
-    },
-
     getSpacesAround: function(object) {
         var spaces = [];
         spaces.push(new RoomPosition(object.pos.x - 1, object.pos.y - 1, object.room.name));
@@ -43,6 +27,24 @@ var roomFunctions = {
             }
         }
         return freeSpaces;
+    },
+
+    makeRoomSources: function(spawn) {
+        var room = spawn.room.memory;
+        var sources = spawn.room.find(FIND_SOURCES);
+        var len = sources.length;
+        for(var i = 0; i < len; i++) {
+            if(!room.sources) {
+                room.sources = {};
+            }
+            if(!room.sources["S" + i]) {
+                room.sources["S" + i] = {};
+                room.sources["S" + i]['name'] = "S" + i;
+                room.sources["S" + i]['id'] = sources[i].id;
+                room.sources["S" + i]['freeSpaces'] =
+                roomFunctions.getFreeSpacesAround(sources[i]).length + 1;
+            }
+        }
     }
 }
 
