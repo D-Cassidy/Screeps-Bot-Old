@@ -7,6 +7,7 @@ const creepFunctions = require('./creepFunctions');
 const roomFunctions = require('./roomFunctions');
 const spawnFunctions = require('./spawnFunctions');
 const towerFunctions = require('./towerFunctions');
+const creepNames = require('./creepNames');
 
 module.exports.loop = function() {
     // Tick, Tock...
@@ -20,12 +21,12 @@ module.exports.loop = function() {
             if(!creep.working) {
                 Memory.rooms[creep.room].sources[creep.source]['freeSpaces']++;
             }
-            
+
             delete Memory.creeps[name];
         }
     }
 
-    if(Game.time % 10 == 0) {
+    //if(Game.time % 10 == 0) {
         const roleCount = creepFunctions.roleCount();
         for(var name in Game.spawns) {
             var spawn = Game.spawns[name];
@@ -36,7 +37,7 @@ module.exports.loop = function() {
                 roomFunctions.makeRoomSources(spawn);
             }
         }
-    }
+    //}
 
     for(var name in Game.structures) {
         var structure = Game.structures[name];

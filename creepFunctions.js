@@ -11,7 +11,7 @@ var creepFunctions = {
 
     // Used to make more creeps
     roleCount: function() {
-        const roleCount = Object.values(Game.creeps).reduce((obj, creep) => {
+        var roleCount = Object.values(Game.creeps).reduce((obj, creep) => {
             obj[creep.memory.role]++;
             if(creep.memory.working) { obj['Working']++; }
             else { obj['Slacking']++; }
@@ -66,21 +66,19 @@ var creepFunctions = {
 
     // Get structures creep can transfer too, sorted
     getTransferrableStructures: function(creep) {
-        var structures = creep.room.find(FIND_MY_STRUCTURES).filter(structure => {
-            if((structure.structureType == STRUCTURE_SPAWN ||
-            structure.structureType == STRUCTURE_EXTENSION ||
-            structure.structureType == STRUCTURE_TOWER) &&
-            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
-                return structure;
-            }
-        });
-        // Sorts strucures by amount of energy in descending order
-        structures.sort((a, b) => {
-            return (a.store.getUsedCapacity(RESOURCE_ENERGY) -
+        return creep.room.find(FIND_MY_STRUCTURES)
+            .filter(structure => {
+                if((structure.structureType == STRUCTURE_SPAWN ||
+                structure.structureType == STRUCTURE_EXTENSION ||
+                structure.structureType == STRUCTURE_TOWER) &&
+                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+                    return structure;
+                }
+            })
+            .sort((a, b) => {
+                return (a.store.getUsedCapacity(RESOURCE_ENERGY) -
                     b.store.getUsedCapacity(RESOURCE_ENERGY));
-        });
-
-        return structures;
+            });
     },
 
     getConstructionSites: function(creep) {
