@@ -1,6 +1,6 @@
-var roomFunctions = {
+class Room {
 
-    getSpacesAround: function(object) {
+    getSpacesAround(object) {
         var spaces = [];
         spaces.push(new RoomPosition(object.pos.x - 1, object.pos.y - 1, object.room.name));
         spaces.push(new RoomPosition(object.pos.x, object.pos.y - 1, object.room.name));
@@ -14,10 +14,10 @@ var roomFunctions = {
         spaces.push(new RoomPosition(object.pos.x + 1, object.pos.y + 1, object.room.name));
 
         return spaces;
-    },
+    }
 
-    getFreeSpacesAround: function(object) {
-        var spacesAround = roomFunctions.getSpacesAround(object);
+    getFreeSpacesAround(object) {
+        var spacesAround = this.getSpacesAround(object);
         var freeSpaces = [];
         var len = spacesAround.length;
         for (var i = 0; i < len; i++) {
@@ -27,25 +27,25 @@ var roomFunctions = {
             }
         }
         return freeSpaces;
-    },
+    }
 
-    initRoomSources: function(spawn) {
-        var room = spawn.room.memory;
-        var sources = spawn.room.find(FIND_SOURCES);
+    initRoomSources(room) {
+        var roomMem = room.memory || room;
+        var sources = room.find(FIND_SOURCES);
         var len = sources.length;
         for(var i = 0; i < len; i++) {
-            if(!room.sources) {
-                room.sources = {};
+            if(!roomMem.sources) {
+                roomMem.sources = {};
             }
-            if(!room.sources["S" + i]) {
-                room.sources["S" + i] = {};
-                room.sources["S" + i]['name'] = "S" + i;
-                room.sources["S" + i]['id'] = sources[i].id;
-                room.sources["S" + i]['freeSpaces'] =
-                roomFunctions.getFreeSpacesAround(sources[i]).length + 1;
+            if(!roomMem.sources["S" + i]) {
+                roomMem.sources["S" + i] = {};
+                roomMem.sources["S" + i]['name'] = "S" + i;
+                roomMem.sources["S" + i]['id'] = sources[i].id;
+                roomMem.sources["S" + i]['freeSpaces'] =
+                this.getFreeSpacesAround(sources[i]).length + 1;
             }
         }
     }
 }
 
-module.exports = roomFunctions;
+module.exports = new Room();

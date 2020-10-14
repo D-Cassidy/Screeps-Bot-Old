@@ -1,10 +1,8 @@
 const RoleHarvester = require('./role.harvester');
 const RoleUpgrader = require('./role.upgrader');
 const RoleBuilder = require('./role.builder');
-const CreepsBase = require('./creeps');
 const StructBase = require('./struct-base');
 const creepNames = require('./creepNames')
-const roomFunctions = require('./roomFunctions');
 
 class Spawner extends StructBase {
     constructor() {
@@ -92,10 +90,6 @@ class Spawner extends StructBase {
 
         if(spawn.spawning) {
             this.displaySpawningText(spawn);
-        }
-
-        if(Game.time % 1000 == 0) {
-            roomFunctions.initRoomSources(spawn);
         }
     }
 };

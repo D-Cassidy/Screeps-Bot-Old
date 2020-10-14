@@ -27,10 +27,6 @@ class Tower extends StructBase {
     }
 
     run(tower) {
-        // TODO:
-        // Attack enemy creeps
-        // Heal friendly creeps
-        // Repair structures
         this.attackHostileCreeps(tower);
         this.healFriendlyCreeps(tower);
         this.repairStructures(tower);

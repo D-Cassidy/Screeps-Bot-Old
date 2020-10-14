@@ -5,17 +5,15 @@ const RoleUpgrader = require('./role.upgrader');
 const RoleBuilder = require('./role.builder');
 const Tower = require('./struct-tower');
 const Spawner = require('./struct-spawner');
-const roomFunctions = require('./roomFunctions');
-const creepNames = require('./creepNames');
-
+const Room = require('./room');
 
 module.exports.loop = function() {
     // Tick, Tock...
     // console.log(['tick', 'tock'][Game.time % 2]);
 
     // Loop for dealing with creep's memory
-    for(var name in Memory.creeps) {
-        var creep = Memory.creeps[name];
+    for(let name in Memory.creeps) {
+        let creep = Memory.creeps[name];
         if(!Game.creeps[name]) {
 
             if(!creep.working) {
@@ -26,10 +24,12 @@ module.exports.loop = function() {
         }
     }
 
-    for(var name in Game.rooms) {
+    for(let name in Game.rooms) {
         let room = Game.rooms[name];
+        Room.initRoomSources(room);
+
         let structures = room.find(FIND_MY_STRUCTURES);
-        for(var name in structures) {
+        for(let name in structures) {
             let s = structures[name];
             if(s.structureType == Spawner.structureType) {
                 Spawner.run(s);
@@ -41,16 +41,10 @@ module.exports.loop = function() {
     }
 
     // Loop for existing creeps, runs role logic
-    for(var name in Game.creeps) {
-        var creep = Game.creeps[name];
-        if(RoleHarvester.is(creep)) {
-            RoleHarvester.run(creep);
-        }
-        else if(RoleUpgrader.is(creep)) {
-            RoleUpgrader.run(creep);
-        }
-        else if(RoleBuilder.is(creep)) {
-            RoleBuilder.run(creep);
-        }
+    for(let name in Game.creeps) {
+        let creep = Game.creeps[name];
+        if(RoleHarvester.is(creep)) RoleHarvester.run(creep);
+        else if(RoleUpgrader.is(creep)) RoleUpgrader.run(creep);
+        else if(RoleBuilder.is(creep)) RoleBuilder.run(creep);
     }
 }
