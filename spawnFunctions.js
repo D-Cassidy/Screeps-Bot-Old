@@ -5,6 +5,16 @@ const creepNames = require('./creepNames')
 
 var spawnFunctions = {
 
+    displaySpawningText: function(spawn) {
+        var percent = parseInt((spawn.spawning.needTime - spawn.spawning.remainingTime) / spawn.spawning.needTime * 100);
+        spawn.room.visual.text(
+            `CREATING ${spawn.spawning.name} (%${percent})`,
+            spawn.pos.x + 1,
+            spawn.pos.y,
+            {size:'0.5', align: 'left', opacity: 0.8, font: 'bold italic 0.75 Comic Sans'}
+        );
+    },
+
     getCreepBody: function(spawn, panic) {
         var i, j, n, len;
         var creepBody, creepBodyBase, creepBodyCost, availableEnergy;
@@ -58,7 +68,7 @@ var spawnFunctions = {
     spawnDrone: function(spawn, body, role) {
         var dName = creepNames[Game.time % creepNames.length] + ' ' + role.charAt(0);
         if (spawn.spawnCreep(body, dName, {dryRun: true}) == OK) {
-            console.log(`CREATING DRONE. PLEASE ENJOY YOUR SHORT EXISTENCE ${dName}`);
+            console.log(`CREATING DRONE. WELCOME ${dName}, PLEASE ENJOY YOUR SHORT EXISTENCE`);
             spawn.spawnCreep(body, dName, {memory: {
                 role: role,
                 room: spawn.room.name,

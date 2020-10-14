@@ -11,7 +11,7 @@ const creepNames = require('./creepNames');
 
 module.exports.loop = function() {
     // Tick, Tock...
-    console.log(['tick', 'tock'][Game.time % 2]);
+    // console.log(['tick', 'tock'][Game.time % 2]);
 
     // Loop for dealing with creep's memory
     for(var name in Memory.creeps) {
@@ -26,18 +26,21 @@ module.exports.loop = function() {
         }
     }
 
-    //if(Game.time % 10 == 0) {
-        const roleCount = creepFunctions.roleCount();
-        for(var name in Game.spawns) {
-            var spawn = Game.spawns[name];
+    for(var name in Game.spawns) {
+        var spawn = Game.spawns[name];
+        if(Game.time % 10 == 0) {
+            var roleCount = creepFunctions.roleCount();
             spawnFunctions.checkForSpawn(spawn, roleCount);
-
-            // Will set room source memory, if it does not exist
-            if(Game.time % 1000 == 0) {
-                roomFunctions.makeRoomSources(spawn);
-            }
         }
-    //}
+        if(spawn.spawning) {
+            spawnFunctions.displaySpawningText(spawn);
+        }
+
+        // Will set room source memory, if it does not exist
+        if(Game.time % 1000 == 0) {
+            roomFunctions.makeRoomSources(spawn);
+        }
+    }
 
     for(var name in Game.structures) {
         var structure = Game.structures[name];

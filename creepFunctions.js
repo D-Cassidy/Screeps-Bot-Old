@@ -25,7 +25,7 @@ var creepFunctions = {
         });
 
         // Print role counts
-        console.log(`Harvesters: ${roleCount.Harvester} |`,
+        console.log(`\nHarvesters: ${roleCount.Harvester} |`,
             `Upgraders: ${roleCount.Upgrader} |`,
             `Builders: ${roleCount.Builder} |`,
             `(Working: ${roleCount.Working}, Harvesting: ${roleCount.Slacking})`
