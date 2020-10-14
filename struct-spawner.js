@@ -1,6 +1,7 @@
 const RoleHarvester = require('./role.harvester');
 const RoleUpgrader = require('./role.upgrader');
 const RoleBuilder = require('./role.builder');
+const RoleRemoteMiner = require('./role.remote-miner');
 const StructBase = require('./struct-base');
 const Phases = require('./phases');
 const creepNames = require('./creepNames')
@@ -69,6 +70,9 @@ class Spawner extends StructBase {
         }
         else if (roleCount.Builder < phase.Builder.count) {
             this.spawnDrone(spawn, body, RoleBuilder.roleName);
+        }
+        else if (roleCount['Remote-Miner'] < phase['Remote-Miner'].count) {
+            this.spawnDrone(spawn, body, RoleRemoteMiner.roleName);
         }
     }
 

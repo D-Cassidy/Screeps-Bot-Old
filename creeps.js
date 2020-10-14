@@ -44,7 +44,8 @@ class CreepsBase {
 
     // Get structures creep can transfer too, sorted
     getTransferrableStructures(creep) {
-        return creep.room.find(FIND_MY_STRUCTURES)
+        let room = Game.rooms[creep.memory.origin];
+        return room.find(FIND_MY_STRUCTURES)
             .filter(structure => {
                 if((structure.structureType == STRUCTURE_SPAWN ||
                 structure.structureType == STRUCTURE_EXTENSION ||

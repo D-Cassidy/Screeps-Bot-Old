@@ -17,6 +17,7 @@ class StructBase {
             Harvester: 0,
             Upgrader: 0,
             Builder: 0,
+            'Remote-Miner': 0,
             Working: 0,
             Slacking: 0
         });
@@ -25,6 +26,7 @@ class StructBase {
         console.log(`\nHarvesters: ${roleCount.Harvester} |`,
             `Upgraders: ${roleCount.Upgrader} |`,
             `Builders: ${roleCount.Builder} |`,
+            `Remote-Miners: ${roleCount['Remote-Miner']} |`,
             `(Working: ${roleCount.Working}, Harvesting: ${roleCount.Slacking})`
         );
 

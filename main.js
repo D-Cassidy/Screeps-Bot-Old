@@ -3,6 +3,7 @@
 const RoleHarvester = require('./role.harvester');
 const RoleUpgrader = require('./role.upgrader');
 const RoleBuilder = require('./role.builder');
+const RoleRemoteMiner = require('./role.remote-miner');
 const Tower = require('./struct-tower');
 const Spawner = require('./struct-spawner');
 const Room = require('./room');
@@ -42,5 +43,6 @@ module.exports.loop = function() {
         if(RoleHarvester.is(creep)) RoleHarvester.run(creep);
         else if(RoleUpgrader.is(creep)) RoleUpgrader.run(creep);
         else if(RoleBuilder.is(creep)) RoleBuilder.run(creep);
+        else if(RoleRemoteMiner.is(creep)) RoleRemoteMiner.run(creep);
     }
 }

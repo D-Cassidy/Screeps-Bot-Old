@@ -11,6 +11,9 @@ var Phases = [
         },
         Builder: {
             count: 4
+        },
+        'Remote-Miner': {
+            count: 0
         }
     },
     { // Controller Level 2
@@ -24,6 +27,9 @@ var Phases = [
         },
         Builder: {
             count: 2
+        },
+        'Remote-Miner': {
+            count: 0
         }
     },
     { // Controller Level 3
@@ -37,6 +43,9 @@ var Phases = [
         },
         Builder: {
             count: 2
+        },
+        'Remote-Miner': {
+            count: 1
         }
     }
 ];
@@ -46,7 +55,7 @@ Phases.getPhaseDetails = function(room) {
     while(!Phases[phaseNo]) {
         phaseNo--;
         if(phaseNo == 0) {
-            console.log(`Phase does not exist in ${room.name}`);
+            console.log(`Phase does not exist`);
             return false;
         }
     }
