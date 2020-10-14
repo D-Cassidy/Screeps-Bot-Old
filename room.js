@@ -23,8 +23,7 @@ class Room {
         var freeSpaces = [];
         var len = spacesAround.length;
         for (var i = 0; i < len; i++) {
-            var look = spacesAround[i].lookFor(LOOK_TERRAIN);
-            if(look != 'wall') {
+            if(spacesAround[i].lookFor(LOOK_TERRAIN) != 'wall' && spacesAround[i].lookFor(LOOK_CREEPS)) {
                 freeSpaces.push(spacesAround[i]);
             }
         }
@@ -38,22 +37,6 @@ class Room {
         if(!roomMem.phase) {
             console.log(`Initializing Phase No. in ${room.name}`);
             roomMem.phase = Phases.getCurrentPhaseNo(room);
-        }
-
-        // Energy Source Memory
-        var sources = room.find(FIND_SOURCES);
-        var len = sources.length;
-        for(var i = 0; i < len; i++) {
-            if(!roomMem.sources) {
-                roomMem.sources = {};
-            }
-            if(!roomMem.sources["S" + i]) {
-                roomMem.sources["S" + i] = {};
-                roomMem.sources["S" + i]['name'] = "S" + i;
-                roomMem.sources["S" + i]['id'] = sources[i].id;
-                roomMem.sources["S" + i]['freeSpaces'] =
-                this.getFreeSpacesAround(sources[i]).length + 1;
-            }
         }
     }
 }

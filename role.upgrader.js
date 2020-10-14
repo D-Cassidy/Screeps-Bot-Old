@@ -1,16 +1,13 @@
 const CreepsBase = require('./creeps');
 
-const role = 'Upgrader';
 class RoleUpgrader extends CreepsBase {
     constructor() {
-        super(role);
+        super('Upgrader');
     }
 
-    /*is: function(creep) {
-        return (creep.memory.role == this.roleName) ? true : false;
-    },*/
-
     run(creep) {
+
+        this.suicideCheck(creep);
         this.workerStateCheck(creep);
 
         if (!creep.memory.working) {

@@ -78,8 +78,7 @@ class Spawner extends StructBase {
             console.log(`CREATING DRONE. WELCOME ${dName}, PLEASE ENJOY YOUR SHORT EXISTENCE`);
             spawn.spawnCreep(body, dName, {memory: {
                 role: role,
-                room: spawn.room.name,
-                source: "S" + 0,
+                origin: spawn.room.name,
                 spawn: spawn.name,
                 working: true
             }});

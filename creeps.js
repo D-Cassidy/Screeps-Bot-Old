@@ -1,3 +1,4 @@
+const Room = require('./room');
 const misc = require('./misc');
 
 class CreepsBase {
@@ -9,30 +10,37 @@ class CreepsBase {
         return creep.memory.role == this.roleName;
     }
 
+    suicideCheck(creep) {
+        if(creep.ticksToLive < 3) {
+            if(!creep.memory.working) {
+                Memory.rooms[creep.memory.room].sources[creep.memory.source]['freeSpaces']++;
+            }
+            console.log(`For the greater good, ${creep.name} must commit Sepuku.`);
+            creep.suicide();
+        }
+    }
+
     // Used by harvest to check if source has a free space
     getFreeSource(creep) {
-        // loop through and check free spaces of source
-        for (var name in creep.room.memory.sources) {
-            var source = creep.room.memory.sources[name];
-            if(source['freeSpaces'] > 0) {
-                return source['name'];
+        let sources = creep.room.find(FIND_SOURCES);
+        for(let i = 0; i < sources.length; i++) {
+            if(Room.getFreeSpacesAround(sources[i]).length > 0) {
+                return sources[i].id;
             }
         }
-        // if the for loop failed to get a source...
-        return creep.room.memory.sources['S0']['name'];
+        return sources[0].id;
     }
 
     // Swaps creep working memory between true and false
     workerStateCheck(creep) {
         if (creep.store[RESOURCE_ENERGY] == 0 && creep.memory.working == true) {
             creep.memory.working = false;
-            creep.memory.source = this.getFreeSource(creep);
-            creep.room.memory.sources[creep.memory.source]['freeSpaces']--;
+            creep.memory.sourceId = this.getFreeSource(creep);
             creep.say('BEEP BOOP');
         }
         else if (creep.store[RESOURCE_ENERGY] == creep.store.getCapacity() && creep.memory.working == false) {
             creep.memory.working = true;
-            creep.room.memory.sources[creep.memory.source]['freeSpaces']++;
+            delete creep.memory.sourceId;
             creep.say('BEEP BOOP');
         }
     }
@@ -69,7 +77,7 @@ class CreepsBase {
 
     // Harvests using creep's memory of source
     harvest(creep) {
-        var source = Game.getObjectById(creep.room.memory.sources[creep.memory.source]['id']);
+        var source = Game.getObjectById(creep.memory.sourceId);
         if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
             creep.moveTo(source, {visualizePathStyle: misc.pathStyle});
         }

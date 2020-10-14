@@ -1,17 +1,13 @@
 const CreepsBase = require('./creeps');
 
-const role = 'Harvester';
 class RoleHarvester extends CreepsBase {
     constructor() {
-        super(role);
+        super('Harvester');
     }
-
-    /*is: function(creep) {
-        return (creep.memory.role == this.roleName) ? true : false;
-    }*/
 
     run(creep) {
 
+        this.suicideCheck(creep);
         this.workerStateCheck(creep);
 
         if (!creep.memory.working) {

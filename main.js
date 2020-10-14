@@ -14,13 +14,7 @@ module.exports.loop = function() {
 
     // Loop for dealing with creep's memory
     for(let name in Memory.creeps) {
-        let creep = Memory.creeps[name];
         if(!Game.creeps[name]) {
-
-            if(!creep.working) {
-                Memory.rooms[creep.room].sources[creep.source]['freeSpaces']++;
-            }
-
             delete Memory.creeps[name];
         }
     }
