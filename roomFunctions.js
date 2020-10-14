@@ -29,7 +29,7 @@ var roomFunctions = {
         return freeSpaces;
     },
 
-    makeRoomSources: function(spawn) {
+    initRoomSources: function(spawn) {
         var room = spawn.room.memory;
         var sources = spawn.room.find(FIND_SOURCES);
         var len = sources.length;

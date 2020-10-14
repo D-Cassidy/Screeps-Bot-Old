@@ -1,8 +1,10 @@
 const RoleHarvester = require('./role.harvester');
 const RoleUpgrader = require('./role.upgrader');
 const RoleBuilder = require('./role.builder');
+const CreepsBase = require('./creeps');
 const StructBase = require('./struct-base');
 const creepNames = require('./creepNames')
+const roomFunctions = require('./roomFunctions');
 
 class Spawner extends StructBase {
     constructor() {
@@ -53,20 +55,20 @@ class Spawner extends StructBase {
         var body;
         if (roleCount.Harvester == 0) {
             console.log("ALL THE HARVESTERS ARE GONE 🦀");
-            body = spawnFunctions.getCreepBody(spawn, true); // 250
+            body = this.getCreepBody(spawn, true); // 250
         }
         else {
-            body = spawnFunctions.getCreepBody(spawn, false); // 600
+            body = this.getCreepBody(spawn, false); // 600
         }
 
         if (roleCount.Harvester < 2) {
-            spawnFunctions.spawnDrone(spawn, body, RoleHarvester.roleName);
+            this.spawnDrone(spawn, body, RoleHarvester.roleName);
         }
         else if (roleCount.Upgrader < 2) {
-            spawnFunctions.spawnDrone(spawn, body, RoleUpgrader.roleName);
+            this.spawnDrone(spawn, body, RoleUpgrader.roleName);
         }
         else if (roleCount.Builder < 3) {
-            spawnFunctions.spawnDrone(spawn, body, RoleBuilder.roleName);
+            this.spawnDrone(spawn, body, RoleBuilder.roleName);
         }
     }
 
@@ -81,6 +83,19 @@ class Spawner extends StructBase {
                 spawn: spawn.name,
                 working: true
             }});
+        }
+    }
+
+    run(spawn) {
+        var roleCount = this.roleCount();
+        this.checkForSpawn(spawn, roleCount);
+
+        if(spawn.spawning) {
+            this.displaySpawningText(spawn);
+        }
+
+        if(Game.time % 1000 == 0) {
+            roomFunctions.initRoomSources(spawn);
         }
     }
 };

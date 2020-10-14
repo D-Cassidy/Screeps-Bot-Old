@@ -32,17 +32,10 @@ module.exports.loop = function() {
         for(var name in structures) {
             let s = structures[name];
             if(s.structureType == Spawner.structureType) {
-                var roleCount = creepFunctions.roleCount();
-                Spawner.checkForSpawn(s, roleCount);
-                if(spawn.spawning) {
-                    Spawner.displaySpawningText(s);
-                }
-                if(Game.time % 1000 == 0) {
-                    roomFunctions.makeRoomSources(spawn);
-                }
+                Spawner.run(s);
             }
             else if(s.structureType == Tower.structureType) {
-                Tower.runTower(structure);
+                Tower.run(s);
             }
         }
     }
