@@ -5,19 +5,27 @@ const roleBuilder = require('./role.builder');
 var spawnFunctions = {
 
     checkForSpawn: function (spawn, roleCount) {
-        if (roleCount.Upgrader < 2) {
-            spawnFunctions.spawnDrone(spawn, roleUpgrader.roleName);
+        if (roleCount.Harvester == 0) {
+            var body = [WORK, CARRY, MOVE, MOVE]; // 250
         }
-        else if (roleCount.Harvester < 4) {
-            spawnFunctions.spawnDrone(spawn, roleHarvester.roleName);
+        else {
+            var body = [WORK, WORK, WORK,
+                CARRY, CARRY, CARRY, CARRY,
+                MOVE, MOVE, MOVE, MOVE]; // 700
         }
-        else if (roleCount.Builder < 4) {
-            spawnFunctions.spawnDrone(spawn, roleBuilder.roleName);
+
+        if (roleCount.Harvester < 2) {
+            spawnFunctions.spawnDrone(spawn, body, roleHarvester.roleName);
+        }
+        else if (roleCount.Upgrader < 2) {
+            spawnFunctions.spawnDrone(spawn, body, roleUpgrader.roleName);
+        }
+        else if (roleCount.Builder < 2) {
+            spawnFunctions.spawnDrone(spawn, body, roleBuilder.roleName);
         }
     },
 
-    spawnDrone: function(spawn, role) {
-        var body = [WORK, CARRY, MOVE, MOVE];
+    spawnDrone: function(spawn, body, role) {
         var dName = "Drone " + role.charAt(0) + (Game.time % 10000);
         if (spawn.spawnCreep(body, dName, {dryRun: true}) == OK) {
             console.log(`CREATING DRONE. ${dName} PLEASE ENJOY YOUR SHORT EXISTENCE`);

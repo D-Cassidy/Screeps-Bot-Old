@@ -85,7 +85,7 @@ var creepFunctions = {
 
     getConstructionSites: function(creep) {
         var sites = creep.room.find(FIND_MY_CONSTRUCTION_SITES).sort((a, b) => {
-            return (a.progress - b.progress);
+            return (b.progress - a.progress);
         });
         return sites;
     },
