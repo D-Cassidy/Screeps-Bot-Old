@@ -16,52 +16,22 @@ module.exports.loop = function() {
     for(var name in Memory.creeps) {
         var creep = Memory.creeps[name];
         if(!Game.creeps[name]) {
+
             if(!creep.working) {
                 Memory.rooms[creep.room].sources[creep.source]['freeSpaces']++;
             }
+            
             delete Memory.creeps[name];
         }
     }
 
     if(Game.time % 10 == 0) {
-        // Count roles and place in object
-        const roleCount = Object.values(Game.creeps).reduce((obj, creep) => {
-            obj[creep.memory.role]++;
-            if(creep.memory.working) {
-                obj['Working']++;
-            }
-            else {
-                obj['Slacking']++;
-            }
-            return obj;
-        }, {
-            Harvester: 0,
-            Upgrader: 0,
-            Builder: 0,
-            Working: 0,
-            Slacking: 0
-        });
-        // Print role counts
-        console.log(`Harvesters: ${roleCount.Harvester} |`,
-            `Upgraders: ${roleCount.Upgrader} |`,
-            `Builders: ${roleCount.Builder} |`,
-            `(Working: ${roleCount.Working}, Harvesting: ${roleCount.Slacking})`
-        );
-
-        // Loop for owned spawns and make creep logic
+        const roleCount = creepFunctions.roleCount();
         for(var name in Game.spawns) {
             var spawn = Game.spawns[name];
-            if (roleCount.Harvester < 2) {
-                spawnFunctions.spawnDrone(spawn, roleHarvester.roleName);
-            }
-            else if (roleCount.Upgrader < 2) {
-                spawnFunctions.spawnDrone(spawn, roleUpgrader.roleName);
-            }
-            else if (roleCount.Builder < 6) {
-                spawnFunctions.spawnDrone(spawn, roleBuilder.roleName);
-            }
+            spawnFunctions.checkForSpawn(spawn, roleCount);
 
-            // Will initialize room source memory
+            // Will set room source memory, if it does not exist
             if(Game.time % 1000 == 0) {
                 roomFunctions.makeRoomSources(spawn);
             }

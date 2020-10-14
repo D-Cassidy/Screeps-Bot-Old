@@ -9,13 +9,6 @@ var roleBuilder = {
         return (creep.memory.role == this.roleName) ? true : false;
     },
 
-    build: function(creep, sites) {
-        let site = sites[0];
-        if(creep.build(site) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(site, {visualizePathStyle: creepFunctions.pathStyle});
-        }
-    },
-
     /** @param {Creep} creep **/
     run: function(creep) {
 
@@ -24,13 +17,13 @@ var roleBuilder = {
         if (!creep.memory.working) {
             creepFunctions.harvest(creep);
         }
-        else if (creep.memory.working) {
-            var sites = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+        else {
+            var sites = creepFunctions.getConstructionSites(creep);
             if(sites.length == 0) {
                 roleHarvester.run(creep);
             }
             else {
-                roleBuilder.build(creep, sites);
+                creepFunctions.build(creep, sites);
             }
         }
     }

@@ -8,12 +8,6 @@ var roleUpgrader = {
         return (creep.memory.role == this.roleName) ? true : false;
     },
 
-    upgrade: function(creep) {
-        if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(creep.room.controller, {visualizePathStyle: creepFunctions.pathStyle});
-        }
-    },
-
     /** @param {Creep} creep **/
     run: function(creep) {
 
@@ -22,8 +16,8 @@ var roleUpgrader = {
         if (!creep.memory.working) {
             creepFunctions.harvest(creep);
         }
-        else if (creep.memory.working) {
-            roleUpgrader.upgrade(creep);
+        else {
+            creepFunctions.upgrade(creep);
         }
     }
 };
