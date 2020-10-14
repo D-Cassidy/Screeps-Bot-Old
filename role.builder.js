@@ -1,4 +1,4 @@
-const roleHarvester = require('role.harvester');
+const roleUpgrader = require('role.upgrader');
 const creepFunctions = require('creepFunctions');
 
 var roleBuilder = {
@@ -20,7 +20,7 @@ var roleBuilder = {
         else {
             var sites = creepFunctions.getConstructionSites(creep);
             if(sites.length == 0) {
-                roleHarvester.run(creep);
+                roleUpgrader.run(creep);
             }
             else {
                 creepFunctions.build(creep, sites);

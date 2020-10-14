@@ -5,13 +5,13 @@ const roleBuilder = require('./role.builder');
 var spawnFunctions = {
 
     checkForSpawn: function (spawn, roleCount) {
-        if (roleCount.Harvester < 2) {
-            spawnFunctions.spawnDrone(spawn, roleHarvester.roleName);
-        }
-        else if (roleCount.Upgrader < 2) {
+        if (roleCount.Upgrader < 2) {
             spawnFunctions.spawnDrone(spawn, roleUpgrader.roleName);
         }
-        else if (roleCount.Builder < 6) {
+        else if (roleCount.Harvester < 4) {
+            spawnFunctions.spawnDrone(spawn, roleHarvester.roleName);
+        }
+        else if (roleCount.Builder < 4) {
             spawnFunctions.spawnDrone(spawn, roleBuilder.roleName);
         }
     },
