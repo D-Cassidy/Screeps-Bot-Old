@@ -2,7 +2,6 @@ var Phases = [
     {}, // Controller Level 0...
     { // Controller Level 1
         Level: 1,
-
         Harvester: {
             body: [WORK, CARRY, MOVE, MOVE],
             count: 2,
@@ -26,7 +25,6 @@ var Phases = [
     },
     { // Controller Level 2
         Level: 2,
-
         Harvester: {
             body: [WORK, CARRY, MOVE, MOVE],
             count: 2,
@@ -50,7 +48,6 @@ var Phases = [
     },
     { // Controller Level 3
         Level: 3,
-
         Harvester: {
             body: [WORK, WORK, CARRY, MOVE],
             count: 2,
@@ -83,7 +80,6 @@ Phases.getPhaseDetails = function(room) {
             return false;
         }
     }
-
     return Phases[phaseNo];
 }
 Phases.getCurrentPhaseNo = function(room) {

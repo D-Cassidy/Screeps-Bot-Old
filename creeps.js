@@ -5,18 +5,15 @@ class CreepsBase {
     constructor(role) {
         this.roleName = role;
     }
-
     is(creep) {
         return creep.memory.role == this.roleName;
     }
-
     suicideCheck(creep) {
         if(creep.ticksToLive == 1) {
             console.log(`For the greater good, ${creep.name} must commit Sepuku.`);
             creep.suicide();
         }
     }
-
     // Used by harvest to check if source has a free space
     getFreeSource(creep) {
         let sources = creep.room.find(FIND_SOURCES);
@@ -27,21 +24,6 @@ class CreepsBase {
         }
         return sources[0].id;
     }
-
-    // Swaps creep working memory between true and false
-    workerStateCheck(creep) {
-        if (creep.store[RESOURCE_ENERGY] == 0 && creep.memory.working == true) {
-            creep.memory.working = false;
-            creep.memory.sourceId = this.getFreeSource(creep);
-            creep.say('BEEP BOOP');
-        }
-        else if (creep.store[RESOURCE_ENERGY] == creep.store.getCapacity() && creep.memory.working == false) {
-            creep.memory.working = true;
-            delete creep.memory.sourceId;
-            creep.say('BEEP BOOP');
-        }
-    }
-
     // Get structures creep can transfer too, sorted
     getTransferrableStructures(creep) {
         let room = Game.rooms[creep.memory.origin];
@@ -57,23 +39,33 @@ class CreepsBase {
                 }
             })
             .sort((a, b) => {
-                return (a.store[RESOURCE_ENERGY] - b.store[RESOURCE_ENERGY]);
+                return (misc.structurePriority[b.structureType] - misc.structurePriority[a.structureType]);
             });
     }
-
     getConstructionSites(creep) {
         var sites = creep.room.find(FIND_MY_CONSTRUCTION_SITES).sort((a, b) => {
             return (b.progress - a.progress);
         });
         return sites;
     }
-
+    // Swaps creep working memory between true and false
+    workerStateCheck(creep) {
+        if (creep.store[RESOURCE_ENERGY] == 0 && creep.memory.working == true) {
+            creep.memory.working = false;
+            creep.memory.sourceId = this.getFreeSource(creep);
+            creep.say('BEEP BOOP');
+        }
+        else if (creep.store[RESOURCE_ENERGY] == creep.store.getCapacity() && creep.memory.working == false) {
+            creep.memory.working = true;
+            delete creep.memory.sourceId;
+            creep.say('BEEP BOOP');
+        }
+    }
     build(creep, sites) {
         if(creep.build(sites[0]) == ERR_NOT_IN_RANGE) {
             creep.moveTo(sites[0], {visualizePathStyle: misc.pathStyle});
         }
     }
-
     // Harvests using creep's memory of source
     harvest(creep) {
         var source = Game.getObjectById(creep.memory.sourceId);
@@ -81,13 +73,11 @@ class CreepsBase {
             creep.moveTo(source, {visualizePathStyle: misc.pathStyle});
         }
     }
-
     transferEnergy(creep, structures) {
         if(creep.transfer(structures[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
             creep.moveTo(structures[0], {visualizePathStyle: misc.pathStyle});
         }
     }
-
     upgrade(creep) {
         if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
             creep.moveTo(creep.room.controller, {visualizePathStyle: misc.pathStyle});

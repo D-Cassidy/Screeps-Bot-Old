@@ -4,17 +4,15 @@ class RoleHarvester extends CreepsBase {
     constructor() {
         super('Harvester');
     }
-
     run(creep) {
-
         this.suicideCheck(creep);
         this.workerStateCheck(creep);
-
         if (!creep.memory.working) {
             this.harvest(creep);
         }
         else {
             var structures = this.getTransferrableStructures(creep);
+            console.log(structures);
             if(structures.length == 0) {
                 roleUpgrader.run(creep);
             }

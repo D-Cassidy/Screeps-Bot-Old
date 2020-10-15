@@ -1,5 +1,4 @@
 module.exports = {
-
     pathStyle: {
         fill: 'transparent',
         stroke: '#fff',
@@ -7,14 +6,12 @@ module.exports = {
         strokeWidth: .15,
         opacity: .1
     },
-
     // not used anywhere
     structurePriority: {
-        STRUCTURE_SPAWN: 5,
-        STRUCTURE_TOWER: 4,
-        STRUCTURE_EXTENSION: 3,
-        STRUCTURE_CONTAINER: 2,
-        STRUCUTRE_STORAGE: 1
+        spawn: 5,
+        tower: 4,
+        extension: 3,
+        container: 2,
+        storage: 1
     }
-
 };

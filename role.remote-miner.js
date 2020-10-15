@@ -5,12 +5,9 @@ class RoleRemoteMiner extends CreepsBase {
     constructor() {
         super('Remote-Miner')
     }
-
     run(creep) {
-
         this.suicideCheck(creep);
         this.workerStateCheck(creep);
-
         if(!creep.memory.working) {
             if(creep.room.name == creep.memory.origin) {
                 let exit = creep.room.find(FIND_EXIT)[0];

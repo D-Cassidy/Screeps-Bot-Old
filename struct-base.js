@@ -2,11 +2,10 @@ class StructBase {
     constructor(structureType) {
         this.structureType = structureType;
     }
-
-    // Used to make more creeps
+    // Counts roles within a room
     roleCount(room) {
         var roleCount = Object.values(Game.creeps).reduce((obj, creep) => {
-            if(creep.memory.origin == room.name || creep.memory.room == room.name || creep.memory.shardWide) {
+            if(creep.memory.origin == room.name || creep.memory.shardWide) {
                 obj[creep.memory.role]++;
                 if(creep.memory.working) { obj['Working']++; }
                 else { obj['Slacking']++; }
@@ -21,7 +20,6 @@ class StructBase {
             Working: 0,
             Slacking: 0
         });
-
         // Print role counts
         console.log(`Harvesters: ${roleCount.Harvester} |`,
             `Upgraders: ${roleCount.Upgrader} |`,
@@ -30,7 +28,6 @@ class StructBase {
             `(Working: ${roleCount.Working}, Harvesting: ${roleCount.Slacking})`,
             `in ${room.name}`
         );
-
         return roleCount;
     }
 }
