@@ -12,7 +12,6 @@ class RoleHarvester extends CreepsBase {
         }
         else {
             var structures = this.getTransferrableStructures(creep);
-            console.log(structures);
             if(structures.length == 0) {
                 roleUpgrader.run(creep);
             }

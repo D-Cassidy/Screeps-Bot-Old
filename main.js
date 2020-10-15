@@ -9,8 +9,6 @@ const Spawner = require('./struct-spawner');
 const Room = require('./room');
 const Phases = require('./phases');
 
-const Flag = require('./flags');
-
 module.exports.loop = function() {
     // Tick, Tock...
     // console.log(['tick', 'tock'][Game.time % 2]);
