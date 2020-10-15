@@ -4,48 +4,72 @@ var Phases = [
         Level: 1,
 
         Harvester: {
-            count: 2
+            body: [WORK, CARRY, MOVE, MOVE],
+            count: 2,
+            minEnergyToSpawn: 250
         },
         Upgrader: {
-            count: 4
+            body: [WORK, CARRY, MOVE, MOVE],
+            count: 4,
+            minEnergyToSpawn: 250
         },
         Builder: {
-            count: 4
+            body: [WORK, CARRY, MOVE, MOVE],
+            count: 4,
+            minEnergyToSpawn: 250
         },
         'Remote-Miner': {
-            count: 0
+            body: [WORK, CARRY, MOVE, MOVE],
+            count: 0,
+            minEnergyToSpawn: 250
         }
     },
     { // Controller Level 2
         Level: 2,
 
         Harvester: {
-            count: 2
+            body: [WORK, CARRY, MOVE, MOVE],
+            count: 2,
+            minEnergyToSpawn: 250
         },
         Upgrader: {
-            count: 4
+            body: [WORK, CARRY, MOVE, MOVE],
+            count: 4,
+            minEnergyToSpawn: 250
         },
         Builder: {
-            count: 2
+            body: [WORK, CARRY, MOVE, MOVE],
+            count: 2,
+            minEnergyToSpawn: 250
         },
         'Remote-Miner': {
-            count: 0
+            body: [WORK, CARRY, MOVE, MOVE],
+            count: 0,
+            minEnergyToSpawn: 250
         }
     },
     { // Controller Level 3
         Level: 3,
 
         Harvester: {
-            count: 2
+            body: [WORK, WORK, CARRY, MOVE],
+            count: 2,
+            minEnergyToSpawn: 300
         },
         Upgrader: {
-            count: 2
+            body: [WORK, CARRY, MOVE],
+            count: 2,
+            minEnergyToSpawn: 250
         },
         Builder: {
-            count: 2
+            body: [WORK, CARRY, MOVE],
+            count: 2,
+            minEnergyToSpawn: 250
         },
         'Remote-Miner': {
-            count: 1
+            body: [WORK, WORK, CARRY, MOVE],
+            count: 2,
+            minEnergyToSpawn: 300
         }
     }
 ];

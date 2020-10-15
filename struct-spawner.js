@@ -5,6 +5,7 @@ const RoleRemoteMiner = require('./role.remote-miner');
 const StructBase = require('./struct-base');
 const Phases = require('./phases');
 const creepNames = require('./creepNames')
+const constants = require('./constants');
 
 class Spawner extends StructBase {
     constructor() {
@@ -21,69 +22,70 @@ class Spawner extends StructBase {
         );
     }
 
-    getCreepBody(spawn, panic) {
-        var i, j, n, len;
-        var creepBody, creepBodyBase, creepBodyCost, availableEnergy;
-
-        creepBodyBase = [WORK, CARRY, MOVE]; // Cost: 200
-        creepBodyCost = 200;
-        creepBody = [];
+    getCreepBody(spawn, creepBodyBase) {
+        let creepBody = [], availableEnergy;
         availableEnergy = spawn.room.find(FIND_MY_STRUCTURES).reduce((total, structure) => {
             if(structure.structureType == STRUCTURE_SPAWN ||
-                structure.structureType == STRUCTURE_EXTENSION) {
-                if(!panic) {
-                    return total + structure.store.getCapacity(RESOURCE_ENERGY);
-                }
-                else {
-                    return total + structure.store[RESOURCE_ENERGY];
-                }
+            structure.structureType == STRUCTURE_EXTENSION) {
+                return total + structure.store[RESOURCE_ENERGY];
             }
             else return total;
         }, 0);
 
+        let i, j, n, len, creepBodyCost;
+        creepBodyCost = this.getCreepBodyCost(creepBodyBase);
         len = creepBodyBase.length;
-        n = parseInt(availableEnergy / creepBodyCost) - 1;
+        n = parseInt(availableEnergy / creepBodyCost);
         for(i = 0; i < len; i++) {
             for(j = 0; j < n; j++) {
                 creepBody.push(creepBodyBase[i]);
             }
         }
+
         return creepBody;
     }
 
-    checkForSpawn(spawn, roleCount) {
-        let body;
-        if (roleCount.Harvester == 0) {
-            console.log("ALL THE HARVESTERS ARE GONE 🦀");
-            body = this.getCreepBody(spawn, true);
+    getCreepBodyCost(body) {
+        let i, len, cost = 0;
+        len = body.length;
+        for(i = 0; i < len; i++) {
+            cost += constants[body[i].toUpperCase()];
         }
-        else {
-            body = this.getCreepBody(spawn, false);
-        }
+        return cost;
+    }
 
+    checkForSpawn(spawn, roleCount) {
         let phase = Phases.getPhaseDetails(spawn.room);
         if (roleCount.Harvester < phase.Harvester.count) {
-            this.spawnDrone(spawn, body, RoleHarvester.roleName);
+            this.spawnDrone(spawn, RoleHarvester.roleName, false);
         }
         else if (roleCount.Upgrader < phase.Upgrader.count) {
-            this.spawnDrone(spawn, body, RoleUpgrader.roleName);
+            this.spawnDrone(spawn, RoleUpgrader.roleName, false);
         }
         else if (roleCount.Builder < phase.Builder.count) {
-            this.spawnDrone(spawn, body, RoleBuilder.roleName);
+            this.spawnDrone(spawn, RoleBuilder.roleName, false);
         }
         else if (roleCount['Remote-Miner'] < phase['Remote-Miner'].count) {
-            this.spawnDrone(spawn, body, RoleRemoteMiner.roleName);
+            this.spawnDrone(spawn, RoleRemoteMiner.roleName, true);
         }
     }
 
-    spawnDrone(spawn, body, role) {
-        var dName = creepNames[Game.time % creepNames.length] + ' ' + role.charAt(0);
+    spawnDrone(spawn, role, shardwide) {
+        let phase = Phases.getPhaseDetails(spawn.room);
+        let body = this.getCreepBody(spawn, phase[role].body);
+        if(!body || body.length == 0 || this.getCreepBodyCost(body) < phase[role].minEnergyToSpawn) {
+            return;
+        }
+
+        let dName = creepNames[Game.time % creepNames.length] + ' ' + role.charAt(0);
         if (spawn.spawnCreep(body, dName, {dryRun: true}) == OK) {
-            console.log(`CREATING DRONE. WELCOME ${dName}, PLEASE ENJOY YOUR SHORT EXISTENCE`);
+            console.log(`CREATING DRONE IN ${spawn.room.name}. WELCOME ${dName}, PLEASE ENJOY YOUR SHORT EXISTENCE`);
             spawn.spawnCreep(body, dName, {memory: {
                 role: role,
                 origin: spawn.room.name,
                 spawn: spawn.name,
+                sourceId: '',
+                shardWide: shardwide,
                 working: true
             }});
         }
@@ -94,7 +96,6 @@ class Spawner extends StructBase {
             var roleCount = this.roleCount(spawn.room);
             this.checkForSpawn(spawn, roleCount);
         }
-
         if(spawn.spawning) {
             this.displaySpawningText(spawn);
         }

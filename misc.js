@@ -8,10 +8,11 @@ module.exports = {
         opacity: .1
     },
 
+    // not used anywhere
     structurePriority: {
         STRUCTURE_SPAWN: 5,
-        STRUCTURE_EXTENSION: 4,
-        STRUCTURE_TOWER: 3,
+        STRUCTURE_TOWER: 4,
+        STRUCTURE_EXTENSION: 3,
         STRUCTURE_CONTAINER: 2,
         STRUCUTRE_STORAGE: 1
     }

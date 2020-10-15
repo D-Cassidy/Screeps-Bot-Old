@@ -9,9 +9,14 @@ const Spawner = require('./struct-spawner');
 const Room = require('./room');
 const Phases = require('./phases');
 
+const Flag = require('./flags');
+
 module.exports.loop = function() {
     // Tick, Tock...
     // console.log(['tick', 'tock'][Game.time % 2]);
+
+    // console.log(Flag.getCheckerBoardAround(new RoomPosition(25, 25, 'W2S15'), 7, 0));
+    // console.log(Flag.getCheckerBoardAround(new RoomPosition(25, 25, 'W2S15'), 7, 1));
 
     // Loop for dealing with creep's memory
     for(let name in Memory.creeps) {

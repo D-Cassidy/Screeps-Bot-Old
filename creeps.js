@@ -57,8 +57,7 @@ class CreepsBase {
                 }
             })
             .sort((a, b) => {
-                return (misc.structurePriority[a.structureType] -
-                    misc.structurePriority[b.structureType]);
+                return (a.store[RESOURCE_ENERGY] - b.store[RESOURCE_ENERGY]);
             });
     }
 

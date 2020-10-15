@@ -23,11 +23,12 @@ class StructBase {
         });
 
         // Print role counts
-        console.log(`\nHarvesters: ${roleCount.Harvester} |`,
+        console.log(`Harvesters: ${roleCount.Harvester} |`,
             `Upgraders: ${roleCount.Upgrader} |`,
             `Builders: ${roleCount.Builder} |`,
             `Remote-Miners: ${roleCount['Remote-Miner']} |`,
-            `(Working: ${roleCount.Working}, Harvesting: ${roleCount.Slacking})`
+            `(Working: ${roleCount.Working}, Harvesting: ${roleCount.Slacking})`,
+            `in ${room.name}`
         );
 
         return roleCount;
